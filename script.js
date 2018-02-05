@@ -5,12 +5,27 @@ $(document).ready(function() {
 var ctr = 0;
 var noiseScale=0.02;
 
+var buffer_time = 200;
+var the_ideas = ['light','to give','life']
+var ideas_idx = 0;
+var last_update = Date.now()
+
+
 function setup() {
 	width = window.innerWidth;
 	height = window.innerHeight;
 	createCanvas(width, height);
 
 	$(document).click(function() {noiseSeed(random()*1000);})
+	$(document).mousemove(function() {
+		if (Date.now() - last_update > buffer_time) {
+			//var idea = choose_random(the_ideas)
+			var idea = the_ideas[ideas_idx]
+			ideas_idx = (ideas_idx + 1) % the_ideas.length;
+			$('#banner').html('is '+ idea);
+			last_update = Date.now();
+		}
+	})
 }
 
 function draw() {
@@ -39,4 +54,9 @@ function draw() {
 		// noise Line
 		//line(i, 0+noiseVal*200, i, height-(2*noiseVal*200))
 	}
+}
+
+function choose_random( array ) {
+        var i = Math.floor(Math.random()*array.length)
+        return array[i]
 }
